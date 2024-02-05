@@ -1,12 +1,11 @@
-const inquirer = require("inquirer");
-const fs = require("fs");
-const { Triangle, Square, Circle } = require("./lib/shapes");
+import fs from 'fs';
+import { Triangle, Square, Circle } from './lib/shapes.js';
 
 function writeToFile(fileName, answers) {
 
     let svgStr = "";
 
-    svgStr = '<svg version="1.5.3 width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
+    svgStr = '<svg version="1.5" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
     svgStr += "<g>";
 
     let shapeChoice;
@@ -30,45 +29,49 @@ function writeToFile(fileName, answers) {
     });
 }
 
-function promptUser() {
-    inquirer.prompt([
-        {
-          type: "input",
-          message: "What text would you like your logo to display? (Enter up to three characters)",
-          name: "text",
-          
-        },
+async function promptUser() {
+  const inquirerModule = await import('inquirer');
+  const inquirer = inquirerModule.default;
 
-        {
-          type: "input",
-          message:
-            "Choose text color (Enter color keyword OR a hexadecimal number)",
-          name: "textColor",
-        },
+  inquirer.prompt([
+    {
+      type: "input",
+      message: "What text would you like your logo to display? (Enter up to three characters)",
+      name: "text",
+      
+    },
 
-        {
-          type: "list",
-          message: "What shape would you like the logo to render?",
-          choices: ["Triangle", "Square", "Circle"],
-          name: "shape",
-        },
+    {
+      type: "input",
+      message:
+        "Choose text color (Enter color keyword OR a hexadecimal number)",
+      name: "textColor",
+    },
 
-        {
-          type: "input",
-          message:
-            "Choose shapes color (Enter color keyword OR a hexadecimal number)",
-          name: "shapeBackgroundColor",
-        },
-      ]).then((answers) => {
+    {
+      type: "list",
+      message: "What shape would you like the logo to render?",
+      choices: ["Triangle", "Square", "Circle"],
+      name: "shape",
+    },
 
-        if (answers.text.length > 3) {
-          console.log("Must enter a value of no more than 3 characters");
-          promptUser();
-        } else {
+    {
+      type: "input",
+      message:
+        "Choose shapes color (Enter color keyword OR a hexadecimal number)",
+      name: "shapeBackgroundColor",
+    },
+  ]).then((answers) => {
 
-          writeToFile("logo.svg", answers);
-        }
-    });
+    if (answers.text.length > 3) {
+      console.log("Must enter a value of no more than 3 characters");
+      promptUser();
+    } else {
+
+      writeToFile("logo.svg", answers);
+    }
+});
+
 }
 
 promptUser();
