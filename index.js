@@ -8,19 +8,18 @@ function writeToFile(fileName, answers) {
 
     svgStr = '<svg version="1.5.3 width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
     svgStr += "<g>";
-    svgStr += `${answers.shape}`;
 
     let shapeChoice;
     if (answers.shape === "Triangle") {
       shapeChoice = new Triangle();
-      svgStr += `<polygon points="150, 18 244, 182 56, 182" fill="${answers.shapeBackgroundColor}"/>`;
     } else if (answers.shape === "Square") {
       shapeChoice = new Square();
-      svgStr += `<rect x="73" y="40" width="160" height="160" fill="${answers.shapeBackgroundColor}"/>`;
-    } else {
+    } else if (answers.shape === "Circle") {
       shapeChoice = new Circle();
-      svgStr += `<circle cx="150" cy="115" r="80" fill="${answers.shapeBackgroundColor}"/>`;
-    }
+    } 
+
+    shapeChoice.setColor(answers.shapeBackgroundColor);
+    svgStr += shapeChoice.render();
 
     svgStr += `<text x="150" y="130" text-anchor="middle" font-size="40" fill="${answers.textColor}">${answers.text}</text>`;
     svgStr += "</g>";
@@ -35,9 +34,9 @@ function promptUser() {
     inquirer.prompt([
         {
           type: "input",
-          message:
-            "What text would you like you logo to display? (Enter up to three characters)",
+          message: "What text would you like your logo to display? (Enter up to three characters)",
           name: "text",
+          
         },
 
         {
