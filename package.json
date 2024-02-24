@@ -9,7 +9,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest lib/shapes.test.js"
   },
   "keywords": [],
   "author": "",
